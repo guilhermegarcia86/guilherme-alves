@@ -1,21 +1,29 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { allPosts } from 'contentlayer/generated';
+import Link from "next/link"
+import { getAllPosts, getPostFrontmatter } from "@/lib/posts"
 
-export default function Home() {
-  // Ordena por data
-  const posts = allPosts.sort((a: any, b: any) => b.date.localeCompare(a.date));
+export default async function PostsPage() {
+  const posts = await getAllPosts()
+  // Carrega frontmatter só para exibição de título/data
+  const postsWithMeta = await Promise.all(
+    posts.map(async (post) => ({
+      ...post,
+      frontmatter: await getPostFrontmatter(post.slug),
+    }))
+  )
+
   return (
-    <main className="max-w-2xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">Posts do Blog</h1>
+    <div>
+      <h1>Posts</h1>
       <ul>
-        {posts.map((post: any) => (
-          <li key={post._id} className="mb-4">
-            <a href={`/posts/${post.slug}`} className="text-xl text-blue-700 hover:underline">{post.title}</a>
-            <p className="text-gray-500 text-sm">{post.date}</p>
-            <p className="text-gray-700">{post.description}</p>
+        {postsWithMeta.map((post) => (
+          <li key={post.slug}>
+            <Link href={`/posts/${post.slug}`}>
+              {post.frontmatter.title}
+            </Link>
+            <span> – {post.frontmatter.date}</span>
           </li>
         ))}
       </ul>
-    </main>
-  );
+    </div>
+  )
 }

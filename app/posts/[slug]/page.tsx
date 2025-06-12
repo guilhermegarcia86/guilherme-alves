@@ -1,26 +1,44 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { allPosts } from 'contentlayer/generated';
-import { notFound } from 'next/navigation';
-import { useMDXComponent } from 'next-contentlayer/hooks';
+import { getAllPosts, getPostFrontmatter } from "@/lib/posts"
+import { notFound } from "next/navigation"
+import { Metadata } from "next"
 
-type Props = { params: { slug: string } };
-
-export async function generateStaticParams() {
-  return allPosts.map((post: any) => ({
-    slug: post.slug,
-  }));
+// Define proper metadata types if needed
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: { slug: string } 
+}): Promise<Metadata> {
+  const frontmatter = await getPostFrontmatter(params.slug)
+  return {
+    title: frontmatter.title,
+    description: frontmatter.description,
+  }
 }
 
-export default function PostPage({ params }: Props) {
-  const post = allPosts.find((p: any) => p.slug === params.slug);
-  const MDXContent = useMDXComponent(post ? post.body.code : '');
-  if (!post) return notFound();
+// Gera as rotas estáticas com base nos arquivos .mdx disponíveis
+export async function generateStaticParams() {
+  return getAllPosts()
+}
+
+// Simplified approach - no explicit param typing
+export default async function PostPage({ params }: any) {
+  // Importa o componente MDX dinamicamente pelo slug
+  let PostContent
+  try {
+    PostContent = (await import(`@/content/posts/${params.slug}.mdx`)).default
+  } catch {
+    return notFound()
+  }
+
+  // Se quiser usar os dados do frontmatter para título/data:
+  const frontmatter = await getPostFrontmatter(params.slug)
 
   return (
-    <main className="prose dark:prose-invert mx-auto p-8">
-      <h1>{post.title}</h1>
-      <p className="text-sm text-gray-500">{post.date}</p>
-      <MDXContent />
-    </main>
-  );
+    <article>
+      <h1>{frontmatter.title}</h1>
+      <small>{frontmatter.date}</small>
+      <PostContent />
+    </article>
+  )
 }
