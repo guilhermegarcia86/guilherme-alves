@@ -10,21 +10,21 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mdx-js/loader": "^3.1.0",
-    "@mdx-js/react": "^3.1.0",
-    "@next/mdx": "^15.3.3",
-    "geist": "^1.0.0",
-    "gray-matter": "^4.0.3",
     "next": "^15.3.3",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "@next/mdx": "^15.3.3",
+    "@mdx-js/react": "^2.3.0",
+    "@mdx-js/loader": "^2.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "geist": "^1.0.0",
+    "gray-matter": "^4.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "^15.3.3",

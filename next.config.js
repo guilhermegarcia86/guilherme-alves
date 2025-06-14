@@ -2,7 +2,10 @@
 // next.config.js
 const withMDX = require('@next/mdx')({
   extension: /\.mdx?$/,
-  // Se precisar customizar remark/rehype plugins, adicione aqui
+  options: {
+    // You can add custom MDX plugins here if needed
+    providerImportSource: '@mdx-js/react',
+  },
 });
 
 module.exports = withMDX({
@@ -12,5 +15,7 @@ module.exports = withMDX({
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Outras configs...
+  experimental: {
+    mdxRs: true,
+  },
 });

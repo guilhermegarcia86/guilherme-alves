@@ -18,7 +18,10 @@ export async function generateMetadata({
 
 // Gera as rotas estáticas com base nos arquivos .mdx disponíveis
 export async function generateStaticParams() {
-  return getAllPosts()
+  const posts = await getAllPosts();
+  console.log("Generating static params for posts:", posts);
+  debugger; // Para depuração, remova em produção
+  return posts;
 }
 
 // Simplified approach - no explicit param typing
@@ -26,8 +29,10 @@ export default async function PostPage({ params }: any) {
   // Importa o componente MDX dinamicamente pelo slug
   let PostContent
   try {
-    PostContent = (await import(`@/content/posts/${params.slug}.mdx`)).default
-  } catch {
+    // Agora importa de dentro de app/posts/mdx/
+    PostContent = (await import(`../../../content/posts/${params.slug}.mdx`)).default
+  } catch (err) {
+    console.error("Erro ao importar MDX:", err)
     return notFound()
   }
 

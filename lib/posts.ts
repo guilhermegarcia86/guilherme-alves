@@ -6,6 +6,7 @@ const POSTS_DIR = path.join(process.cwd(), "content/posts")
 
 export async function getAllPosts() {
   const files = await fs.readdir(POSTS_DIR)
+  console.log("Arquivos encontrados em POSTS_DIR:", POSTS_DIR, files)
   return files
     .filter((file) => file.endsWith(".mdx"))
     .map((filename) => ({
