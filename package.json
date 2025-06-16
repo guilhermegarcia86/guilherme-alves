@@ -1,35 +1,18 @@
 {
   "name": "guilherme-alves",
-  "version": "0.1.0",
-  "private": true,
+  "type": "module",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "prestart": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
-    "next": "^15.3.3",
-    "@next/mdx": "^15.3.3",
-    "@mdx-js/react": "^2.3.0",
-    "@mdx-js/loader": "^2.3.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "geist": "^1.0.0",
-    "gray-matter": "^4.0.3"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "autoprefixer": "^10.4.21",
-    "eslint": "^9",
-    "eslint-config-next": "^15.3.3",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5"
+    "@astrojs/mdx": "^4.3.0",
+    "@astrojs/rss": "^4.0.12",
+    "@astrojs/sitemap": "^3.4.1",
+    "astro": "^5.9.3",
+    "sharp": "^0.34.2"
   }
 }
