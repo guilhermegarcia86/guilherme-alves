@@ -1,0 +1,148 @@
+---
+title: "Primeiros Passos no MIT App Inventor: Adicionando um banco de dados"
+pubDate: 'Jun 30 2025'
+heroImage: '../../assets/mit-app-inventor-setup.jpg'
+description: "Como salvar e carregar uma lista automaticamente no MIT App Inventor usando TinyDB"
+---
+
+## Introdução
+
+No [primeiro artigo da série](LINK_DO_ARTIGO_ANTERIOR), criamos a estrutura base do nosso projeto no MIT App Inventor: configuramos a conta, criamos um novo projeto e preparamos o ambiente para começar a desenvolver nosso primeiro app.
+
+Agora vamos evoluir esse projeto adicionando funcionalidades importantes para qualquer aplicativo real:
+
+- Salvar dados inseridos pelo usuário
+- Exibir esses dados em uma lista
+- E, o mais importante: **manter esses dados salvos mesmo após fechar o app**
+
+Esse comportamento é possível graças ao uso de um banco de dados local chamado **TinyDB**, que permite **persistência de dados** no dispositivo — ou seja, os dados continuam disponíveis mesmo depois que o app é encerrado.
+
+Vamos construir isso passo a passo.
+
+---
+
+## 🧰 Ferramentas utilizadas
+
+- **MIT App Inventor** (https://appinventor.mit.edu)
+- **TinyDB**: banco de dados local embutido no App Inventor
+- **ListView**: para exibir os itens na tela
+- **TextBox** e **Button**: para adicionar novos itens
+- **Dispositivo Android ou App Inventor Companion para iOS**
+
+---
+
+## ✅ Objetivo do app
+
+Criar um aplicativo onde o usuário pode:
+- Adicionar itens a uma lista
+- Visualizar os itens salvos
+- **Manter a lista salva** mesmo depois de fechar o app
+
+---
+
+## 🛠️ Passo a passo
+
+### 1. Crie o projeto
+
+1. Acesse o MIT App Inventor e clique em `Start new project`
+2. Nomeie como: `carregaLista`
+
+---
+
+### 2. Monte a interface no Designer
+
+- Arraste um **VerticalArrangement** para organizar os componentes
+![Sessão Layout onde se encontra o VerticalArrangement](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/add-vertical-arrangement.png)
+
+- Dentro dele, adicione:
+  - `Label` com o texto: "Minha lista de itens"
+  - `ListView` (renomeie para `ListViewItens`)
+  - `TextBox` (renomeie para `TextBoxNovoItem`)
+  - `Button` com texto: "Adicionar" (renomeie para `BotaoAdicionar`)
+![Sessão User Interface onde se encontra os componentes visuais](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/interface-designer.png)
+
+- Adicione o componente **TinyDB** (fica na aba "Storage")
+![Sessão Storage onde se encontra o TinyDB](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/add-tiny-db.png)
+
+💡 **Dica de layout:**
+- Defina `Height` do `ListView` como 300px
+- Defina `Width` dos componentes como `Fill parent`
+![Sessão ListView](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/dica-1-layout.png)
+- Marque `Scrollable = true` na `Screen1` (útil para iPhone)
+![Sessão Screen1](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/dica-2-layout.png)
+---
+
+Com isso feito a aparencia do app ficará assim:
+![Aparência do app](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/aparencia-app.png)
+
+### 3. Blocos de código
+
+Agora vamos programar a lógica do app usando blocos visuais. Para isso você precisa clicar na aba **Blocks** no canto superior direito.
+![Aba Blocks](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/aba-blocks.png)
+
+Ao fazer isso uma outra aba será aberta com a área de blocos onde você pode arrastar e soltar os componentes que adicionou no Designer.
+
+#### a) Variável global para armazenar a lista
+Vamos iniciar adicionando um variável global, na sessão *Variables*, chamada *listaItens* para armazenar a lista de itens e setar que ela deve começar como uma lista vazia, que se encontra na sessão *Lists*.
+![Bloco de variável global](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/var-global.png)  
+
+---
+
+#### b) Lógica para inicializar o app
+
+Vamos carregar a lista salva no TinyDB quando o app for aberto. Para isso, usamos o evento `Screen1.Initialize` e buscamos os dados do TinyDB.
+
+![Bloco Inicialização do App](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/app-init.png)  
+
+##### Explicando a lógica aplicada: 
+Adicionamos um bloco when Screen1.Initialize, que é executado quando o app é aberto. Dentro dele, usamos o bloco `TinyDB.GetValue` para buscar a lista salva com a chave "listaItens". Se não houver nada salvo, usamos uma lista vazia como padrão e armazenamos o resultado na variável global `listaItens`. Em seguida, atualizamos a `ListViewItens.Elements` com essa lista.
+
+---
+
+#### c) Adicionar itens
+
+Vamos adicionar a lógica para clicar no botão de adicionar e salvar o item no banco de dados
+
+![Bloco Salvar no TinyDB](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/salvar-banco.png)  
+
+##### Explicando a lógica aplicada:
+Adicionamos um bloco when BotaoAdicionar.Click, que é executado quando o botão é clicado. Dentro dele, pegamos o texto do `TextBoxNovoItem`, verificamos se não está vazio e adicionamos esse item à lista global `listaItens`. Em seguida, atualizamos a `ListViewItens.Elements` com a nova lista e salvamos essa lista no TinyDB usando `TinyDB.StoreValue` com a chave "listaItens". Por fim, limpamos o `TextBoxNovoItem` para permitir a adição de novos itens.
+
+---
+
+## ⚠️ Erros comuns (e como evitar)
+
+| Erro | Causa | Como corrigir |
+|------|-------|----------------|
+| A lista não aparece | Está adicionando à `ListView.Elements` ao invés da lista global | Use `global listaItens` na lógica |
+| TextBox não visível no iPhone | Layout mal configurado | Use `VerticalArrangement`, defina tamanhos fixos e ative scroll |
+| Dados não são salvos | Falta de chamada ao `TinyDB.StoreValue` | Verifique se está salvando após adicionar |
+| Campo não limpa após adicionar | Está colocando `set TextBox to "0"` | Use `""` (vazio) para limpar corretamente |
+
+---
+
+## 📱 Testando o app
+
+### No Android:
+1. Baixe o app **MIT AI2 Companion** na Play Store
+2. Clique em `Connect > AI Companion` no navegador
+3. Escaneie o QR code no celular
+
+### No iPhone:
+- Use o **MIT App Inventor Companion** da App Store
+- Rode o app via QR code (não é possível instalar permanentemente)
+
+---
+
+## ✅ Conclusão
+
+Agora seu app está pronto para salvar e carregar automaticamente os dados da lista sempre que for aberto. Esse é um dos primeiros passos para entender **persistência de dados em apps mobile**.
+
+Se quiser continuar, você pode:
+- Adicionar função de deletar itens
+- Trabalhar com múltiplas listas
+- Salvar com datas ou categorias
+
+---
+
+Se este artigo te ajudou, compartilhe com colegas que também estão aprendendo! 😄
