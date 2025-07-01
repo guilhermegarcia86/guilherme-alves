@@ -103,7 +103,7 @@ Adicionamos um bloco when Screen1.Initialize, que é executado quando o app é a
 
 Vamos adicionar a lógica para clicar no botão de adicionar e salvar o item no banco de dados
 
-![Bloco Inicialização do App](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/salvar-banco.png)  
+![Bloco Salvar no TinyDB](https://raw.githubusercontent.com/guilhermegarcia86/guilhermecode.tech/refs/heads/main/assets/posts/app-inventor-bd/salvar-banco.png)  
 
 ##### Explicando a lógica aplicada:
 Adicionamos um bloco when BotaoAdicionar.Click, que é executado quando o botão é clicado. Dentro dele, pegamos o texto do `TextBoxNovoItem`, verificamos se não está vazio e adicionamos esse item à lista global `listaItens`. Em seguida, atualizamos a `ListViewItens.Elements` com a nova lista e salvamos essa lista no TinyDB usando `TinyDB.StoreValue` com a chave "listaItens". Por fim, limpamos o `TextBoxNovoItem` para permitir a adição de novos itens.
